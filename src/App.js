@@ -16,7 +16,9 @@ function App() {
     { label: "State", value: "state" },
   ]);
 
-  const handleSaveSegment = () => {
+  const webhookUrl = "enter your webhook url";
+
+  const handleSave = () => {
     const data = {
       segment_name: segmentName,
       schema: selectedSchemas.map((schema) => ({
@@ -24,7 +26,7 @@ function App() {
       })),
     };
 
-    fetch("https://webhook.site/save", {
+    fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -36,7 +38,8 @@ function App() {
       })
       .catch((error) => console.error("Error saving :", error));
   };
-  const handleAddSchema = () => {
+
+  const handleAdd = () => {
     if (newSchema && schemaList.length > 0) {
       const selectedOption = schemaList.find(
         (option) => option.value === newSchema
@@ -47,7 +50,7 @@ function App() {
     }
   };
 
-  const handleRemoveSchema = (index) => {
+  const handleRemove = (index) => {
     const updatedSchemas = [...selectedSchemas];
     const removedSchema = updatedSchemas.splice(index, 1)[0];
     setSelectedSchemas(updatedSchemas);
@@ -108,7 +111,7 @@ function App() {
                   </select>
                   <button
                     className="remove-schema-btn"
-                    onClick={() => handleRemoveSchema(index)}
+                    onClick={() => handleRemove(index)}
                   >
                     -
                   </button>
@@ -127,14 +130,14 @@ function App() {
                     </option>
                   ))}
                 </select>{" "}
-                <button className="add-schema-btn" onClick={handleAddSchema}>
+                <button className="add-schema-btn" onClick={handleAdd}>
                   + Add new schema
                 </button>
               </div>
             </div>
 
             <div className="action-buttons">
-              <button className="save-segment-btn" onClick={handleSaveSegment}>
+              <button className="save-segment-btn" onClick={handleSave}>
                 Save the Segment
               </button>
               <button
